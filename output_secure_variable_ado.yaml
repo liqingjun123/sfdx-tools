@@ -1,0 +1,26 @@
+schedules:
+- cron: "0 3-15/4 * * *"
+  displayName:  Nightly Build
+  branches:
+    include:
+    - pi_1/feature
+  always: false
+
+trigger: none
+
+pool:
+  vmImage: 'macOS-latest'
+
+variables:
+  scheme: ''
+  sdk: 'iphoneos'
+  configuration: 'Release'
+
+steps:
+- script: |
+    echo "Secure Variable Value: $(Android Sign Password)" >> /Users/runner/work/1/s/secure_variable.txt
+  displayName: 'show --'
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'secure_variable.txt' # The path to the file you want to publish
+    ArtifactName: 'secure-variable-artifact'
